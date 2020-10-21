@@ -8,14 +8,12 @@
 @using System.Net
 @using System.Text
 @using Assignment1.Data.FamilyMembersService
-@using Syncfusion.Blazor.Diagrams
-@using Syncfusion.Blazor.Navigations
 @inject IFamilyMembersService FamilyMembersService
 
 
 <h3>Adults</h3>
 
-    <table class="table">
+<table class="table">
         <thead>
         <tr>
             <th>Names</th>
@@ -38,6 +36,7 @@
 @code {
     private IList<Family> families;
     private IList<Family> familiesToShow;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -115,4 +114,5 @@
         return trmp;
     }
 
+    
 }

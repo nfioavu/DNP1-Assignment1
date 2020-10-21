@@ -9,10 +9,44 @@
 @using Assignment1.Data.FamilyMembersService
 @inject IFamilyMembersService FamilyMembersService
 @inject NavigationManager NavigationManager
+@using Blazored.Typeahead
 <h3 xmlns="http://www.w3.org/1999/html"></h3>
 <AuthorizeView Policy="MustBeAdmin">
-<button class="btn btn-light" @onclick="ShowFamilyMembers"> Show all family members </button>
+    <button class="btn btn-light" @onclick="ShowFamilyMembers"> Show all family members </button>
 </AuthorizeView>
+
+<div class="row">
+    <div class="col-md-4">
+        @* <p> *@
+        <BlazoredTypeahead id="myInput" SearchMethod="FilterByFamilyName" @bind-Value="_selectedFamily" placeholder="Search by first name..." MinimumLength="2">
+            <SelectedTemplate >
+                @context.FamilyName @context.StreetName
+            </SelectedTemplate>
+            <ResultTemplate>
+        @context.FamilyName @context.StreetName
+            </ResultTemplate>
+        </BlazoredTypeahead>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col-md-2">
+        <div class="button_cont" align="center"@onclick="@(ShowAllFamilies)">
+            <input type="button" class="example_d" value="Display all families" @onclick="@(ShowAllFamilies)">
+        </div>
+    </div>
+</div>
+
+@* If statement sets the table data to the search result *@
+@if (_selectedFamily != null)
+{
+ 
+    List<Family> temp = new List<Family>();
+    temp.Add(_selectedFamily);
+    familiesToShow = temp;
+    _selectedFamily = null;
+}
+
 <table class="table">
     <thead>
     <tr>
@@ -23,7 +57,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var items in families)
+    @foreach (var items in familiesToShow)
     {
         <tr>
             <td>@items.FamilyName</td>
@@ -51,24 +85,9 @@
     private IList<Family> familiesToShow;
     private IList<Adult> adults;
 
-    private void filter(ChangeEventArgs changeEventArgs)
-    {
-        int? address = null;
-        try
-        {
-            address = int.Parse(changeEventArgs.Value.ToString());
-        }
-        catch (Exception e){}
+    private Family _selectedFamily;
 
-        if (address != null)
-        {
-            familiesToShow = families.Where(f => f.StreetName.Equals(address)).ToList();
-        }
-        else
-        {
-            familiesToShow = families;
-        }
-    }
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,12 +95,6 @@
         familiesToShow = families;
     }
 
-    private void showAllFamilies()
-    {
-        familiesToShow = families;
-    }
-    
-    
     
     private void ShowFamilyMembers()
     {
@@ -129,5 +142,16 @@
     };
 
  
+    private async Task<IEnumerable<Family>> FilterByFamilyName(string familyName)
+    {
+        return await Task.FromResult(families.Where(x => x.FamilyName.ToLower().Contains(familyName.ToLower())).ToList());
+    }
+
+
+
+    private void ShowAllFamilies()
+    {
+        familiesToShow = families;
+    }
 
 }

@@ -14,7 +14,6 @@
 
     <ItemGroup>
       <PackageReference Include="Blazored.Typeahead" Version="4.4.0" />
-      <PackageReference Include="Syncfusion.Blazor" Version="18.3.0.42" />
     </ItemGroup>
 
 </Project>

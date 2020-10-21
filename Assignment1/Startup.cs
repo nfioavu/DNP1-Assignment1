@@ -15,7 +15,7 @@ using Assignment1.Data;
 using Assignment1.Data.FamilyMembersService;
 using Microsoft.AspNetCore.Components.Authorization;
 using SimpleSetup.Data;
-using Syncfusion.Blazor;
+
 
 namespace Assignment1
 {
@@ -37,7 +37,6 @@ namespace Assignment1
             services.AddSingleton<IFileContext, FileContext>();
             services.AddScoped<IFamilyMembersService, FamilyMembersService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddSyncfusionBlazor();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddAuthorization(options =>
             {

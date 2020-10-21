@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\ioana\\RiderProjects\\DNP1\\Assignment1\\Assignment1.csproj",
+    "projectUniqueName": "C:\\Users\\ROG\\RiderProjects\\DNP\\DNP1-Assignment1\\Assignment1\\Assignment1.csproj",
     "projectName": "Assignment1",
-    "projectPath": "C:\\Users\\ioana\\RiderProjects\\DNP1\\Assignment1\\Assignment1.csproj",
-    "outputPath": "C:\\Users\\ioana\\RiderProjects\\DNP1\\Assignment1\\obj\\",
+    "projectPath": "C:\\Users\\ROG\\RiderProjects\\DNP\\DNP1-Assignment1\\Assignment1\\Assignment1.csproj",
+    "outputPath": "C:\\Users\\ROG\\RiderProjects\\DNP\\DNP1-Assignment1\\Assignment1\\obj\\",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "netcoreapp3.1"
@@ -29,10 +29,6 @@
         "Blazored.Typeahead": {
           "target": "Package",
           "version": "[4.4.0, )"
-        },
-        "Syncfusion.Blazor": {
-          "target": "Package",
-          "version": "[18.3.0.42, )"
         }
       },
       "imports": [
