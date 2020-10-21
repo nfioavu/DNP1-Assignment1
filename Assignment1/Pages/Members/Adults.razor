@@ -1,0 +1,118 @@
+@page "/adults"
+@namespace Assignment1.Pages.Members
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Filters
+@using Microsoft.AspNetCore.Mvc.Formatters
+@using Assignment1.Data
+@using Assignment1
+@using System.Net
+@using System.Text
+@using Assignment1.Data.FamilyMembersService
+@using Syncfusion.Blazor.Diagrams
+@using Syncfusion.Blazor.Navigations
+@inject IFamilyMembersService FamilyMembersService
+
+
+<h3>Adults</h3>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Names</th>
+            <th>Age</th>
+            <th>Job</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var items in familiesToShow)
+        {
+            <tr>
+                <td>@ExtractFamilyAdults(items)</td>
+                <td>@ExtractFamilyAdultsAges(items)</td>
+                <td>@ExtractFamilyAdultsJobs(items)</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+@code {
+    private IList<Family> families;
+    private IList<Family> familiesToShow;
+
+    protected override async Task OnInitializedAsync()
+    {
+        families = FamilyMembersService.GetFamilies();
+        familiesToShow = families;
+    }
+
+    // private void RemoveAdult(int id)
+    // {
+    //     Adult adultToRemove = adults.First(a => a.Id == id);
+    //     FamilyMembersService.RemoveAdult(id);
+    //     adults.Remove(adultToRemove);
+    // }
+    
+    private StringBuilder ExtractFamilyAdults(Family family)
+    {
+        StringBuilder trmp = new StringBuilder();
+        int count = 0;
+        foreach (var adult in family.Adults)
+        {
+            if (adult != null)
+            {
+                count++;
+                trmp.Append(adult.FirstName + " " + adult.LastName + ", ");
+            }
+        }
+
+        if (count != 0)
+        {
+            trmp.Length--;
+            trmp.Length--;
+        }
+        return trmp;
+    }
+    
+    private StringBuilder ExtractFamilyAdultsAges(Family family)
+    {
+        StringBuilder trmp = new StringBuilder();
+        int count = 0;
+        foreach (var adult in family.Adults)
+        {
+            if (adult != null)
+            {
+                count++;
+                trmp.Append(adult.Age + ", ");
+            }
+        }
+
+        if (count != 0)
+        {
+            trmp.Length--;
+            trmp.Length--;
+        }
+        return trmp;
+    }
+    
+    private StringBuilder ExtractFamilyAdultsJobs(Family family)
+    {
+        StringBuilder trmp = new StringBuilder();
+        int count = 0;
+        foreach (var adult in family.Adults)
+        {
+            if (adult != null)
+            {
+                count++;
+                trmp.Append(adult.JobTitle + ", ");
+            }
+        }
+
+        if (count != 0)
+        {
+            trmp.Length--;
+            trmp.Length--;
+        }
+        return trmp;
+    }
+
+}

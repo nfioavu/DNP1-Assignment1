@@ -1,0 +1,100 @@
+@page "/Children"
+@namespace Assignment1.Pages.Members
+
+@using Assignment1.Data.FamilyMembersService
+@using System.Text
+@inject IFamilyMembersService FamilyMembersService
+<h3>Children</h3>
+
+<table class="table">
+        <thead>
+        <tr>
+            <th>Names</th>
+            <th>Age</th>
+            <th>Pet</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var items in familiesToShow)
+        {
+            <tr>
+                <td>@ExtractFamilyChildren(items)</td>
+                <td>@ExtractFamilyChildrenAges(items)</td>
+                <td>@ExtractFamilyChildrenPets(items)</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+@code {
+    private IList<Family> families;
+    private IList<Family> familiesToShow;
+
+    protected override async Task OnInitializedAsync()
+    {
+        families = FamilyMembersService.GetFamilies();
+        familiesToShow = families;
+    }
+    
+    private StringBuilder ExtractFamilyChildren(Family family)
+    {
+        StringBuilder trmp = new StringBuilder();
+        int count = 0;
+        foreach (var child in family.Children)
+        {
+            if (child != null)
+            {
+                count++;
+                trmp.Append(child.FirstName + " " + child.LastName + ", ");
+            }
+        }
+
+        if (count != 0)
+        {
+            trmp.Length--;
+            trmp.Length--;
+        }
+        return trmp;
+    }
+    
+    private StringBuilder ExtractFamilyChildrenAges(Family family)
+    {
+        StringBuilder trmp = new StringBuilder();
+        int count = 0;
+        foreach (var child in family.Children)
+        {
+            if (child != null)
+            {
+                count++;
+                trmp.Append(child.Age + ", ");
+            }
+        }
+
+        if (count != 0)
+        {
+            trmp.Length--;
+            trmp.Length--;
+        }
+        return trmp;
+    }
+    
+    private StringBuilder ExtractFamilyChildrenPets(Family family)
+    {
+        StringBuilder trmp = new StringBuilder();
+        int count = 0;
+        foreach (var pet in family.Pets)
+        {
+            if (pet != null)
+            {
+                count++;
+                trmp.Append(pet.Name);
+            }
+        }
+
+        if (count != 0)
+        {
+            trmp.Length--;
+        }
+        return trmp;
+    }
+}

@@ -1,0 +1,21 @@
+@page "/security"
+@namespace Assignment1.Pages
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<AuthorizeView>
+    <h3>Hello @context.User.Identity.Name</h3>
+    
+    <h5>Your security level is @context.User.FindFirst(claim => claim.Type.Equals ("Level")).Value</h5>
+</AuthorizeView>
+
+<p>This is for level 0 and above</p>
+<AuthorizeView Policy="SecurityLevel2">
+    <p>This is for level 2 and above</p>
+</AuthorizeView>
+<AuthorizeView Policy="SecurityLevel4">
+    <p>This for level 4 and above</p>
+</AuthorizeView>
+
+@code {
+    
+}

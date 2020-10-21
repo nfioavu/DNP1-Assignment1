@@ -1,0 +1,60 @@
+@page "/chart"
+@namespace Assignment1.Pages.General
+
+@using Assignment1.Data.FamilyMembersService
+@inject IFamilyMembersService FamilyMembersService
+@inject NavigationManager NavigationManager
+
+<h3>Chart</h3>
+
+<SfChart>
+    <ChartPrimaryXAxis Title="Number of adults" ValueType="Syncfusion.Blazor.Charts.ValueType.Category"></ChartPrimaryXAxis>
+    <ChartPrimaryYAxis Title="Number of children"></ChartPrimaryYAxis>
+    <ChartSeriesCollection>
+        <ChartSeries DataSource="@familiesChart" XName="adults" YName="children" Type="ChartSeriesType.Column">
+            
+        </ChartSeries>
+    </ChartSeriesCollection>
+</SfChart>
+
+@code {
+    
+    public class FML
+    {
+        public int children;
+        public int adults;
+    }
+    public List<FML> familiesChart = new List<FML>
+    {
+        new FML {children = 2, adults = 2},
+        new FML {children = 2, adults = 1},
+        new FML {children = 0, adults = 2},
+        new FML {children = 4, adults = 2},
+        
+        new FML {children = 2, adults = 1},
+        new FML {children = 2, adults = 2},
+        new FML {children = 1, adults = 2},
+        new FML {children = 1, adults = 1},
+        
+        new FML {children = 2, adults = 2},
+        new FML {children = 2, adults = 1},
+        new FML {children = 2, adults = 2},
+        new FML {children = 6, adults = 2},
+        
+        new FML {children = 3, adults = 1},
+        new FML {children = 2, adults = 2},
+        new FML {children = 3, adults = 2},
+        new FML {children = 1, adults = 2},
+        
+        new FML {children = 3, adults = 2},
+        new FML {children = 3, adults = 2},
+        new FML {children = 3, adults = 2},
+        new FML {children = 3, adults = 1},
+        
+        new FML {children = 2, adults = 2},
+        new FML {children = 5, adults = 1},
+        new FML {children = 3, adults = 2},
+        new FML {children = 3, adults = 2},
+        new FML {children = 2, adults = 2},
+    };
+}

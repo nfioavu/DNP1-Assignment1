@@ -1,0 +1,73 @@
+﻿@page "/"
+@* *@
+@* <h1>Hello, world!</h1> *@
+@* *@
+@* Welcome to your new app. *@
+@namespace Assignment1.Pages.General
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Filters
+@using Microsoft.AspNetCore.Mvc.Formatters
+@using Assignment1.Data
+@using Assignment1
+@using Assignment1.Data.FamilyMembersService
+@inject IFamilyMembersService FamilyMembersService;
+@inject NavigationManager NavigationManager
+<h3 xmlns="http://www.w3.org/1999/html"></h3>
+<p>To visualize more information regarding the families and adults, please log in.</p>
+<AuthorizeView Policy="MustBeAdmin">
+<button class="btn btn-primary" @onclick="showAllFamilies"> Families </button>
+</AuthorizeView>
+<AuthorizeView Policy="MustBeAdmin">
+<button class="btn btn-primary" @onclick="showAllAdults"> Adults </button>
+</AuthorizeView>
+
+@code {
+    private IList<Family> families;
+    private IList<Family> familiesToShow;
+    private IList<Adult> adults;
+    private IList<Adult> adultsToShow;
+
+    private void filterFamilies(ChangeEventArgs changeEventArgs)
+    {
+        int? address = null;
+        try
+        {
+            address = int.Parse(changeEventArgs.Value.ToString());
+        }
+        catch (Exception e){}
+
+        if (address != null)
+        {
+            familiesToShow = families.Where(f => f.StreetName.Equals(address)).ToList();
+        }
+        else
+        {
+            familiesToShow = families;
+        }
+    }
+
+    // private void filterAdults(ChangeEventArgs changeEventArgs)
+    // {
+    //     int? 
+    // }
+
+    protected override async Task OnInitializedAsync()
+    {
+        families = FamilyMembersService.GetFamilies();
+        adults = FamilyMembersService.GetAdults();
+        adultsToShow = adults;
+        familiesToShow = families;
+    }
+    
+    private void showAllFamilies()
+    {
+        NavigationManager.NavigateTo("/families");
+    }
+    
+    private void showAllAdults()
+    {
+        NavigationManager.NavigateTo("/adults");
+    }
+
+}
+

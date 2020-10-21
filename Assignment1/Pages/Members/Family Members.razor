@@ -1,0 +1,142 @@
+@page "/familymembers"
+@using System.Text
+@using Assignment1.Data.FamilyMembersService
+@namespace Assignment1.Pages.Members
+@inject IFamilyMembersService FamilyMembersService
+@inject NavigationManager NavigationManager
+
+
+<h3>Family Members</h3>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Street</th>
+        <th>House Number</th>
+        <th><button class="btn btn-light" @onclick="showAdults"> Adults </button></th>
+        <th><button class="btn btn-light" @onclick="showChildren"> Children </button></th>
+        <th>Pets</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var items in families)
+    {
+        <tr>
+            <td>@items.StreetName</td>
+            <td>@items.HouseNumber</td>
+            <td>@ExtractFamilyAdults(items)</td>
+            <td>@ExtractFamilyChildren(items)</td>
+            <td>@ExtractFamilyPets(items)</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+@code {
+    private IList<Family> families;
+    private IList<Family> familiesToShow;
+    private IList<Adult> adults;
+    IQueryable<Family> ChartsData;
+
+    private void filter(ChangeEventArgs changeEventArgs)
+    {
+        int? address = null;
+        try
+        {
+            address = int.Parse(changeEventArgs.Value.ToString());
+        }
+        catch (Exception e){}
+
+        if (address != null)
+        {
+            familiesToShow = families.Where(f => f.StreetName.Equals(address)).ToList();
+        }
+        else
+        {
+            familiesToShow = families;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        families = FamilyMembersService.GetFamilies();
+        familiesToShow = families;
+    }
+
+    private void showAdults()
+    {
+        NavigationManager.NavigateTo("/adults");
+    }
+    
+    private void showChildren()
+    {
+        NavigationManager.NavigateTo("/children");
+    }
+    
+    private void showAllFamilies()
+    {
+        familiesToShow = families;
+    }
+
+    private StringBuilder ExtractFamilyAdults(Family family)
+    {
+        StringBuilder trmp = new StringBuilder();
+        int count = 0;
+        foreach (var adult in family.Adults)
+        {
+            if (adult != null)
+            {
+                count++;
+                trmp.Append(adult.FirstName + " " + adult.LastName + ", ");
+            }
+        }
+
+        if (count != 0)
+        {
+            trmp.Length--;
+        }
+        return trmp;
+    }
+    
+    private StringBuilder ExtractFamilyChildren(Family family)
+    {
+        StringBuilder trmp = new StringBuilder();
+        int count = 0;
+        foreach (var child in family.Children)
+        {
+            if (child != null)
+            {
+                count++;
+                trmp.Append(child.FirstName + " " + child.LastName + ", ");
+            }
+        }
+
+        if (count != 0)
+        {
+            trmp.Length--;
+        }
+        return trmp;
+    }
+    
+    private StringBuilder ExtractFamilyPets(Family family)
+    {
+        StringBuilder trmp = new StringBuilder();
+        int count = 0;
+        foreach (var pet in family.Pets)
+        {
+            if (pet != null)
+            {
+                count++;
+                trmp.Append(pet.Name);
+            }
+        }
+
+        if (count != 0)
+        {
+            trmp.Length--;
+        }
+        return trmp;
+    }
+    
+}

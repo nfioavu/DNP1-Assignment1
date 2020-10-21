@@ -1,0 +1,44 @@
+@page "/addAdult"
+@namespace Assignment1.Pages
+@attribute [Authorize(Policy="MustBeAdmin")]
+@using Assignment1
+@using Assignment1.Data
+@using Assignment1.Data.FamilyMembersService
+@inject IFamilyMembersService FamilyMembersService;
+@inject NavigationManager NavigationManager;
+<h3>AddAdult</h3>
+
+<EditForm Model="@newAdult" OnValidSubmit="@AddNewAdult">
+    <DataAnnotationsValidator/>
+    <ValidationSummar/>
+    <div class="form-group">
+        First Name:  <br/>
+        <InputTextArea @bind-Value="newAdult.FirstName"/>
+    </div>
+    <div class="form-group">
+        LastName:  <br/>
+        <InputTextArea @bind-Value="newAdult.LastName"/>
+    </div>
+    <div class="form-group">
+                Age:  <br/>
+                <input @bind-value="newAdult.Age"/>
+            </div>
+    <div class="form-group">
+            Job: <br/>
+            <InputTextArea @bind-Value="newAdult.JobTitle"/>
+        </div>
+    
+    <div class="actions">
+        <button class="btn btn-primary" type="submit" @onclick="AddNewAdult">Create</button>
+    </div>
+</EditForm>
+
+@code {
+    private Adult newAdult = new Adult();
+
+    private void AddNewAdult()
+    {
+        FamilyMembersService.AddAdult(newAdult);
+        NavigationManager.NavigateTo("/");
+    }
+}
